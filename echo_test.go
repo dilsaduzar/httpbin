@@ -8,12 +8,13 @@ import (
 	"testing"
 )
 
-func TestEchoHansler(t *testing.T) {
+func TestEchoHandler(t *testing.T) {
 	tstServer := httptest.NewServer(http.HandlerFunc(echoHandler))
+	defer tstServer.Close()
 
 	bodyEcho := bytes.NewBufferString("Dilsad")
 
-	respEcho, err := http.Post(tstServer.URL, "content-type/ text", bodyEcho)
+	respEcho, err := http.Post(tstServer.URL, "content-type/text", bodyEcho)
 	if err != nil {
 		t.Fatal(err)
 	}
