@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -11,17 +10,24 @@ import (
 )
 
 func TestGetHandler_Success(t *testing.T) {
-	tstGet := httptest.NewServer(http.HandlerFunc(getHandler))
-	defer tstGet.Close()
+	ts := httptest.NewServer(http.HandlerFunc(getHandler))
+	defer ts.Close()
 
 	bodyEcho := bytes.NewBufferString("Hello world!")
 
-	respGet, err := http.NewRequest("GET", "http://127.0.0.1:7070/get", bodyEcho)
+	respGet, err := http.NewRequest("GET", ts.URL, bodyEcho)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	outGet, err := io.ReadAll(respGet.Body)
+	respGet.Header.Set("Content-Type", "text/html")
+	client := &http.Client{}
+	req, err := client.Do(respGet)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	outGet, err := io.ReadAll(req.Body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,28 +38,35 @@ func TestGetHandler_Success(t *testing.T) {
 }
 
 func TestGetHandler_Wrong(t *testing.T) {
-	tstGet := httptest.NewServer(http.HandlerFunc(getHandler))
-	defer tstGet.Close()
+	ts := httptest.NewServer(http.HandlerFunc(getHandler))
+	defer ts.Close()
 
 	bodyEcho := bytes.NewBufferString("Hello world!")
 
-	respPost, err := http.NewRequest(http.MethodPost, "http://127.0.0.1:7070/get", bodyEcho)
+	respPost, err := http.NewRequest(http.MethodPost, ts.URL, bodyEcho)
 	if err != nil {
 		t.Fatal(err)
 	}
-	outPost, err := io.ReadAll(respPost.Body)
+
+	respPost.Header.Set("Content-Type", "text/html")
+	client := &http.Client{}
+	req, err := client.Do(respPost)
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Println(string(outPost))
-	//Hata donmuyor. 38. satirda gitdigim degeri basiyor
+
+	outPost, err := io.ReadAll(req.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var errPost errResult
 	err = json.Unmarshal(outPost, &errPost)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if errPost.ErrMsg != "Supported only GET method. Please use GET method." {
-		t.Fatalf("jghlaurg")
+	MsgErr := "Supported only GET method. Please use GET method."
+	if errPost.ErrMsg != MsgErr {
+		t.Fatalf("Error should be: %s\n but i recieved: %s\n", MsgErr, errPost.ErrMsg)
 	}
 }
