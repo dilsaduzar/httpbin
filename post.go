@@ -10,7 +10,6 @@ type errPost struct {
 }
 
 func postHandler(w http.ResponseWriter, r *http.Request) {
-
 	switch r.Method {
 	case "POST":
 		out, err := io.ReadAll(r.Body)
