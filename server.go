@@ -12,6 +12,8 @@ type msgErr struct {
 
 func main() {
 	http.HandleFunc("/echo", echoHandler)
+	http.HandleFunc("/get", getHandler)
+	http.HandleFunc("/post", postHandler)
 	fmt.Println("Starting server: 7070..")
 	err := http.ListenAndServe(":7070", nil)
 	if err != nil {
