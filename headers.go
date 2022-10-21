@@ -14,7 +14,7 @@ type headersResponse struct {
 func headersHandler(w http.ResponseWriter, r *http.Request) {
 	headers := map[string]string{}
 	for key, value := range r.Header {
-		headers[key] = strings.Join(value, "")
+		headers[key] = strings.Join(value, ",")
 	}
 
 	body := headersResponse{
