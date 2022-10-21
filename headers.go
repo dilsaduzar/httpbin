@@ -23,7 +23,7 @@ func headersHandler(w http.ResponseWriter, r *http.Request) {
 
 	out, err := json.MarshalIndent(body, " ", "  ")
 	if err != nil {
-		io.WriteString(w, errMsg("Error Code: I"))
+		io.WriteString(w, errMsg("Error Code: H01"))
 		return
 	}
 
