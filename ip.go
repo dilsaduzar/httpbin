@@ -18,7 +18,7 @@ func ipHandler(w http.ResponseWriter, r *http.Request) {
 
 	ipOut, err := json.MarshalIndent(ipInf, "", "  ")
 	if err != nil {
-		io.WriteString(w, errMsg("Error Code: I"))
+		io.WriteString(w, errMsg("Error Code: IP01"))
 		return
 	}
 
