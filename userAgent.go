@@ -17,7 +17,7 @@ func userAgentHandler(w http.ResponseWriter, r *http.Request) {
 
 	uOut, err := json.MarshalIndent(uAgent, "", "  ")
 	if err != nil {
-		io.WriteString(w, errMsg("Error Code: U"))
+		io.WriteString(w, errMsg("Error Code: UA01"))
 		return
 	}
 	io.WriteString(w, string(uOut))
