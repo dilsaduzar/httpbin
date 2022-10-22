@@ -12,8 +12,12 @@ type msgErr struct {
 }
 
 func main() {
-	port := flag.String("port", "give me port number", "a string")
+	port := flag.String("port", "", "a string")
 	flag.Parse()
+	if *port == "" {
+		fmt.Println("Please give a port number")
+		return
+	}
 
 	http.HandleFunc("/echo", echoHandler)
 	http.HandleFunc("/get", getHandler)
@@ -24,7 +28,7 @@ func main() {
 	http.HandleFunc("/headers", headersHandler)
 
 	fmt.Printf("Starting server: %s\n", *port)
-	err := http.ListenAndServe(*port, nil)
+	err := http.ListenAndServe(fmt.Sprintf(":%s", *port), nil)
 	if err != nil {
 		fmt.Printf("Couldn`t start server. Error %s\n", err)
 	}
