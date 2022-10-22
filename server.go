@@ -15,7 +15,7 @@ func main() {
 	port := flag.String("port", "", "a string")
 	flag.Parse()
 	if *port == "" {
-		fmt.Println("Please give a port number")
+		fmt.Println("Please give a port number. Exemple --port 7077")
 		return
 	}
 
