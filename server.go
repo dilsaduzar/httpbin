@@ -12,7 +12,7 @@ type msgErr struct {
 }
 
 func main() {
-	port := flag.String("port", "", "a string")
+	port := flag.String("port", "", "port number of the running server")
 	flag.Parse()
 	if *port == "" {
 		fmt.Println("Please give a port number. Example --port 7077")
