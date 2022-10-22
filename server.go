@@ -24,7 +24,7 @@ func main() {
 	http.HandleFunc("/post", postHandler)
 	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/ip", ipHandler)
-	http.HandleFunc("/userAgent", userAgentHandler)
+	http.HandleFunc("/user-agent", userAgentHandler)
 	http.HandleFunc("/headers", headersHandler)
 
 	fmt.Printf("Starting server: %s\n", *port)
