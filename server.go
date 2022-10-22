@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"net/http"
 )
@@ -11,11 +12,19 @@ type msgErr struct {
 }
 
 func main() {
+	port := flag.String("port", "give me port number", "a string")
+	flag.Parse()
+
 	http.HandleFunc("/echo", echoHandler)
 	http.HandleFunc("/get", getHandler)
 	http.HandleFunc("/post", postHandler)
-	fmt.Println("Starting server: 7070..")
-	err := http.ListenAndServe(":7070", nil)
+	http.HandleFunc("/", rootHandler)
+	http.HandleFunc("/ip", ipHandler)
+	http.HandleFunc("/userAgent", userAgentHandler)
+	http.HandleFunc("/headers", headersHandler)
+
+	fmt.Printf("Starting server: %s\n", *port)
+	err := http.ListenAndServe(*port, nil)
 	if err != nil {
 		fmt.Printf("Couldn`t start server. Error %s\n", err)
 	}
