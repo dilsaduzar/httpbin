@@ -24,9 +24,13 @@ func main() {
 	http.HandleFunc("/post", postHandler)
 	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/ip", ipHandler)
-	http.HandleFunc("/userAgent", userAgentHandler)
+	http.HandleFunc("/user-agent", userAgentHandler)
 	http.HandleFunc("/headers", headersHandler)
+<<<<<<< HEAD
 	http.HandleFunc("/put", putHandler)
+=======
+	http.HandleFunc("/delete", deleteHandler)
+>>>>>>> 10ec20e23d3a9c3f69382400c24c7cebf7648962
 
 	fmt.Printf("Starting server: %s\n", *port)
 	err := http.ListenAndServe(fmt.Sprintf(":%s", *port), nil)
