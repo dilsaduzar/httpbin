@@ -26,6 +26,7 @@ func main() {
 	http.HandleFunc("/ip", ipHandler)
 	http.HandleFunc("/userAgent", userAgentHandler)
 	http.HandleFunc("/headers", headersHandler)
+	http.HandleFunc("/put", putHandler)
 
 	fmt.Printf("Starting server: %s\n", *port)
 	err := http.ListenAndServe(fmt.Sprintf(":%s", *port), nil)
