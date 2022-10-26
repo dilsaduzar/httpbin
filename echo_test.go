@@ -27,3 +27,23 @@ func TestEchoHandler(t *testing.T) {
 		t.Fatalf(`Output should be "Dilsad",  but you have %s`, stringOut)
 	}
 }
+
+func TestEchoHandler_Path(t *testing.T) {
+	t.Skip()
+
+	tstServer := httptest.NewServer(http.HandlerFunc(echoHandler))
+	defer tstServer.Close()
+
+	respEcho, err := http.Post(tstServer.URL+"/Dilsad", "content-type/text", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	outEcho, err := io.ReadAll(respEcho.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	stringOut := string(outEcho)
+	if stringOut != "Dilsad" {
+		t.Fatalf(`Output should be "Dilsad",  but you have %s`, stringOut)
+	}
+}
