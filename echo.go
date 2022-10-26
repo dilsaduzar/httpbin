@@ -3,6 +3,8 @@ package main
 import (
 	"io"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func echoHandler(w http.ResponseWriter, r *http.Request) {
@@ -11,6 +13,16 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 		io.WriteString(w, errMsg("Error Code: 01"))
 		return
 	}
-	io.WriteString(w, string(out))
+
+	if len(out) > 0 {
+		io.WriteString(w, string(out))
+	} else if len(out) == 0 {
+		vars := mux.Vars(r)
+		key := vars["name"]
+
+		if _, ok := vars["name"]; ok {
+			io.WriteString(w, key)
+		}
+	}
 
 }
