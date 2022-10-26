@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/dilsaduzar/httpbin/handler"
 	"github.com/gorilla/mux"
 )
 
@@ -25,7 +26,7 @@ func main() {
 
 	r.HandleFunc("/", rootHandler)
 
-	r.HandleFunc("/echo/{name}", echoHandler)
+	r.HandleFunc("/echo/{name}", handler.EchoHandler)
 	r.HandleFunc("/status/{codes}", statusHandler)
 
 	// client requests
