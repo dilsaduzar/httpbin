@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -31,14 +30,12 @@ func TestHeaderHandler(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Println(string(out))
 
 	var headersTest headersResponse
 	err = json.Unmarshal(out, &headersTest)
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Println(headersTest.Headers)
 
 	if headersTest.Headers["Accept"] != "A,B" {
 		t.Fatalf("headers result is wrong\n\nwant: %s\n got: %s\n", "A,B", headersTest.Headers["Accept"])
