@@ -16,7 +16,7 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 
 	if string(out) != "" {
 		io.WriteString(w, string(out))
-	} else if string(out) == "" {
+	} else {
 		vars := mux.Vars(r)
 		if key, ok := vars["name"]; ok {
 			io.WriteString(w, key)
