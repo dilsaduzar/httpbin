@@ -14,13 +14,11 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if len(out) > 0 {
+	if string(out) != "" {
 		io.WriteString(w, string(out))
-	} else if len(out) == 0 {
+	} else if string(out) == "" {
 		vars := mux.Vars(r)
-		key := vars["name"]
-
-		if _, ok := vars["name"]; ok {
+		if key, ok := vars["name"]; ok {
 			io.WriteString(w, key)
 		}
 	}
