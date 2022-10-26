@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/gorilla/mux"
 )
 
 func TestEchoHandler(t *testing.T) {
@@ -29,12 +31,13 @@ func TestEchoHandler(t *testing.T) {
 }
 
 func TestEchoHandler_Path(t *testing.T) {
-	t.Skip()
+	r := mux.NewRouter()
+	r.HandleFunc("/echo/{name}", echoHandler)
 
-	tstServer := httptest.NewServer(http.HandlerFunc(echoHandler))
+	tstServer := httptest.NewServer(r)
 	defer tstServer.Close()
 
-	respEcho, err := http.Post(tstServer.URL+"/Dilsad", "content-type/text", nil)
+	respEcho, err := http.Post(tstServer.URL+"/echo/Dilsad", "content-type/text", nil)
 	if err != nil {
 		t.Fatal(err)
 	}

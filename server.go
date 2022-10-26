@@ -5,6 +5,8 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 type msgErr struct {
@@ -19,19 +21,21 @@ func main() {
 		return
 	}
 
-	http.HandleFunc("/echo", echoHandler)
-	http.HandleFunc("/get", getHandler)
-	http.HandleFunc("/post", postHandler)
-	http.HandleFunc("/", rootHandler)
-	http.HandleFunc("/ip", ipHandler)
-	http.HandleFunc("/user-agent", userAgentHandler)
-	http.HandleFunc("/headers", headersHandler)
-	http.HandleFunc("/put", putHandler)
-	http.HandleFunc("/delete", deleteHandler)
-	http.HandleFunc("/patch", patchHandler)
+	r := mux.NewRouter()
+
+	r.HandleFunc("/echo/{name}", echoHandler)
+	r.HandleFunc("/get", getHandler)
+	r.HandleFunc("/post", postHandler)
+	r.HandleFunc("/", rootHandler)
+	r.HandleFunc("/ip", ipHandler)
+	r.HandleFunc("/user-agent", userAgentHandler)
+	r.HandleFunc("/headers", headersHandler)
+	r.HandleFunc("/put", putHandler)
+	r.HandleFunc("/delete", deleteHandler)
+	r.HandleFunc("/patch", patchHandler)
 
 	fmt.Printf("Starting server: %s\n", *port)
-	err := http.ListenAndServe(fmt.Sprintf(":%s", *port), nil)
+	err := http.ListenAndServe(fmt.Sprintf(":%s", *port), r)
 	if err != nil {
 		fmt.Printf("Couldn`t start server. Error %s\n", err)
 	}
