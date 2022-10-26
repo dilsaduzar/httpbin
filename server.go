@@ -23,13 +23,19 @@ func main() {
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/echo/{name}", echoHandler)
-	r.HandleFunc("/get", getHandler)
-	r.HandleFunc("/post", postHandler)
 	r.HandleFunc("/", rootHandler)
+
+	r.HandleFunc("/echo/{name}", echoHandler)
+	r.HandleFunc("/status/{codes}", statusHandler)
+
+	// client requests
 	r.HandleFunc("/ip", ipHandler)
 	r.HandleFunc("/user-agent", userAgentHandler)
 	r.HandleFunc("/headers", headersHandler)
+
+	// methods
+	r.HandleFunc("/get", getHandler)
+	r.HandleFunc("/post", postHandler)
 	r.HandleFunc("/put", putHandler)
 	r.HandleFunc("/delete", deleteHandler)
 	r.HandleFunc("/patch", patchHandler)
