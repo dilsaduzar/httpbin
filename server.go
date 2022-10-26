@@ -33,6 +33,7 @@ func main() {
 	r.HandleFunc("/put", putHandler)
 	r.HandleFunc("/delete", deleteHandler)
 	r.HandleFunc("/patch", patchHandler)
+	r.HandleFunc("/status/{codes}", statusHandler)
 
 	fmt.Printf("Starting server: %s\n", *port)
 	err := http.ListenAndServe(fmt.Sprintf(":%s", *port), r)
