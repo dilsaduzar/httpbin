@@ -5,7 +5,6 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
-	"strconv"
 	"testing"
 
 	"github.com/gorilla/mux"
@@ -13,27 +12,18 @@ import (
 
 func TestStatusHandler_Success(t *testing.T) {
 	r := mux.NewRouter()
-	r.HandleFunc("/echo/{name}", echoHandler)
+	r.HandleFunc("/status/{codes}", statusHandler)
 
 	tstServer := httptest.NewServer(r)
 	defer tstServer.Close()
 
-	resp, err := http.Post(tstServer.URL+"/echo/200", "content-type/text", nil)
+	resp, err := http.Post(tstServer.URL+"/status/200", "content-type/text", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	out, err := io.ReadAll(resp.Body)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	code, err := strconv.Atoi(string(out))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if code != 200 {
-		t.Fatalf(`Output should be "200",  but you have %d`, code)
+	if resp.StatusCode != 200 {
+		t.Fatalf(`Output should be "200",  but you have %d`, resp.StatusCode)
 	}
 }
 func TestStatusHandler_String(t *testing.T) {
@@ -47,6 +37,10 @@ func TestStatusHandler_String(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	if resp.StatusCode != 400 {
+		t.Fatal(err)
+	}
+
 	out, err := io.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatal(err)
@@ -59,7 +53,7 @@ func TestStatusHandler_String(t *testing.T) {
 	}
 }
 
-func TestStatusHandler_WronStatus(t *testing.T) {
+func TestStatusHandler_WrongStatus(t *testing.T) {
 	r := mux.NewRouter()
 	r.HandleFunc("/status/{codes}", statusHandler)
 
@@ -70,6 +64,11 @@ func TestStatusHandler_WronStatus(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	if resp.StatusCode != 400 {
+		t.Fatal(err)
+	}
+
 	out, err := io.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatal(err)
