@@ -1,4 +1,4 @@
-module handler
+module github.com/dilsaduzar/httpbin/handler
 
 go 1.19
 
