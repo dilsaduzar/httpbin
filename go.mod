@@ -1,4 +1,4 @@
-module github.com/dilsaduzar/httpbin
+module github.com/dilsaduzar/httpbin/handler
 
 go 1.19
 
