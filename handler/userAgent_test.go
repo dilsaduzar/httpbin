@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"encoding/json"
@@ -8,15 +8,15 @@ import (
 	"testing"
 )
 
-func TestIpHandler(t *testing.T) {
-	ts := httptest.NewServer(http.HandlerFunc(ipHandler))
+func TestUserAgent(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(UserAgentHandler))
 	defer ts.Close()
 
 	req, err := http.NewRequest("GET", ts.URL, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	req.Host = "78.175.231.108"
+	req.Header.Set("User-Agent", "Golang")
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -29,13 +29,13 @@ func TestIpHandler(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	var ipJSON ip
-	err = json.Unmarshal(out, &ipJSON)
+	var userJSON userResponse
+	err = json.Unmarshal(out, &userJSON)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if ipJSON.Origin != "78.175.231.108" {
-		t.Fatalf("ip result is wrong\n\nwant: %s\n got: %s\n", "78.175.231.108", ipJSON.Origin)
+	if userJSON.UserAgent != "Golang" {
+		t.Fatalf("user agent result is wrong\n\nwant: %s\n got: %s\n", "Golang", userJSON.UserAgent)
 	}
 }

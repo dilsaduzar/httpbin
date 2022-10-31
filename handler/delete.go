@@ -14,7 +14,7 @@ type msgErr struct {
 	ErrMsg string
 }
 
-func deleteHandler(w http.ResponseWriter, r *http.Request) {
+func DeleteHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "DELETE":
 		out, err := io.ReadAll(r.Body)

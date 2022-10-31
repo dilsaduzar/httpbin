@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"io"
@@ -9,7 +9,7 @@ type errResult struct {
 	ErrMsg string
 }
 
-func getHandler(w http.ResponseWriter, r *http.Request) {
+func GetHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		out, err := io.ReadAll(r.Body)

@@ -11,7 +11,7 @@ import (
 )
 
 func TestEchoHandler(t *testing.T) {
-	tstServer := httptest.NewServer(http.HandlerFunc(echoHandler))
+	tstServer := httptest.NewServer(http.HandlerFunc(EchoHandler))
 	defer tstServer.Close()
 
 	bodyEcho := bytes.NewBufferString("Dilsad")
@@ -32,7 +32,7 @@ func TestEchoHandler(t *testing.T) {
 
 func TestEchoHandler_Path(t *testing.T) {
 	r := mux.NewRouter()
-	r.HandleFunc("/echo/{name}", echoHandler)
+	r.HandleFunc("/echo/{name}", EchoHandler)
 
 	tstServer := httptest.NewServer(r)
 	defer tstServer.Close()

@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"encoding/json"
@@ -11,7 +11,7 @@ type headersResponse struct {
 	Headers map[string]string `json:"headers,omitempty"`
 }
 
-func headersHandler(w http.ResponseWriter, r *http.Request) {
+func HeadersHandler(w http.ResponseWriter, r *http.Request) {
 	headers := map[string]string{}
 	for key, value := range r.Header {
 		headers[key] = strings.Join(value, ",")

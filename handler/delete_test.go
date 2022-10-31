@@ -10,7 +10,7 @@ import (
 )
 
 func TestDeleteHandler_Success(t *testing.T) {
-	ts := httptest.NewServer(http.HandlerFunc(deleteHandler))
+	ts := httptest.NewServer(http.HandlerFunc(DeleteHandler))
 	defer ts.Close()
 
 	body := bytes.NewBufferString("Hello world!")
@@ -33,7 +33,7 @@ func TestDeleteHandler_Success(t *testing.T) {
 	}
 }
 func TestDeleteHandler_Wrong(t *testing.T) {
-	ts := httptest.NewServer(http.HandlerFunc(deleteHandler))
+	ts := httptest.NewServer(http.HandlerFunc(DeleteHandler))
 	defer ts.Close()
 
 	body := bytes.NewBufferString("Hello world!")
