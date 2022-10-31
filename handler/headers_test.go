@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 )
 
 func TestHeaderHandler(t *testing.T) {
-	ts := httptest.NewServer(http.HandlerFunc(headersHandler))
+	ts := httptest.NewServer(http.HandlerFunc(HeadersHandler))
 	defer ts.Close()
 
 	req, err := http.NewRequest("GET", ts.URL, nil)

@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"io"
@@ -9,7 +9,7 @@ type patchResponse struct {
 	ErrMsg string
 }
 
-func patchHandler(w http.ResponseWriter, r *http.Request) {
+func PatchHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPatch:
 		out, err := io.ReadAll(r.Body)

@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"encoding/json"
@@ -12,7 +12,7 @@ import (
 
 func TestStatusHandler_Success(t *testing.T) {
 	r := mux.NewRouter()
-	r.HandleFunc("/status/{codes}", statusHandler)
+	r.HandleFunc("/status/{codes}", StatusHandler)
 
 	tstServer := httptest.NewServer(r)
 	defer tstServer.Close()
@@ -28,7 +28,7 @@ func TestStatusHandler_Success(t *testing.T) {
 }
 func TestStatusHandler_String(t *testing.T) {
 	r := mux.NewRouter()
-	r.HandleFunc("/status/{codes}", statusHandler)
+	r.HandleFunc("/status/{codes}", StatusHandler)
 
 	tstServer := httptest.NewServer(r)
 	defer tstServer.Close()
@@ -55,7 +55,7 @@ func TestStatusHandler_String(t *testing.T) {
 
 func TestStatusHandler_WrongStatus(t *testing.T) {
 	r := mux.NewRouter()
-	r.HandleFunc("/status/{codes}", statusHandler)
+	r.HandleFunc("/status/{codes}", StatusHandler)
 
 	tstServer := httptest.NewServer(r)
 	defer tstServer.Close()

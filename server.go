@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"httpbin/handler"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -23,22 +24,22 @@ func main() {
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/", rootHandler)
+	r.HandleFunc("/", handler.RootHandler)
 
-	r.HandleFunc("/echo/{name}", echoHandler)
-	r.HandleFunc("/status/{codes}", statusHandler)
+	r.HandleFunc("/echo/{name}", handler.EchoHandler)
+	r.HandleFunc("/status/{codes}", handler.StatusHandler)
 
 	// client requests
-	r.HandleFunc("/ip", ipHandler)
-	r.HandleFunc("/user-agent", userAgentHandler)
-	r.HandleFunc("/headers", headersHandler)
+	r.HandleFunc("/ip", handler.IpHandler)
+	r.HandleFunc("/user-agent", handler.UserAgentHandler)
+	r.HandleFunc("/headers", handler.HeadersHandler)
 
 	// methods
-	r.HandleFunc("/get", getHandler)
-	r.HandleFunc("/post", postHandler)
-	r.HandleFunc("/put", putHandler)
-	r.HandleFunc("/delete", deleteHandler)
-	r.HandleFunc("/patch", patchHandler)
+	r.HandleFunc("/get", handler.GetHandler)
+	r.HandleFunc("/post", handler.PostHandler)
+	r.HandleFunc("/put", handler.PutHandler)
+	r.HandleFunc("/delete", handler.DeleteHandler)
+	r.HandleFunc("/patch", handler.PatchHandler)
 
 	fmt.Printf("Starting server: %s\n", *port)
 	err := http.ListenAndServe(fmt.Sprintf(":%s", *port), r)

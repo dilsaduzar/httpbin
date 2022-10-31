@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ type statusResponse struct {
 	ErrMsg string
 }
 
-func statusHandler(w http.ResponseWriter, r *http.Request) {
+func StatusHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	code := vars["codes"]
 

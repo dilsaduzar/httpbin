@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"bytes"
@@ -9,12 +9,12 @@ import (
 	"testing"
 )
 
-func TestPatchHandler_Success(t *testing.T) {
-	ts := httptest.NewServer(http.HandlerFunc(patchHandler))
+func TestDeleteHandler_Success(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(DeleteHandler))
 	defer ts.Close()
 
 	body := bytes.NewBufferString("Hello world!")
-	req, err := http.NewRequest(http.MethodPatch, ts.URL, body)
+	req, err := http.NewRequest("DELETE", ts.URL, body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,22 +23,21 @@ func TestPatchHandler_Success(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	out, err := io.ReadAll(resp.Body)
+	outGet, err := io.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatal(err)
 	}
-	stringOut := string(out)
-
+	stringOut := string(outGet)
 	if stringOut != "Hello world!" {
 		t.Fatalf(`Output should be "Hello world!",  but you have %s`, stringOut)
 	}
 }
-func TestPatchHandler_Wrong(t *testing.T) {
-	ts := httptest.NewServer(http.HandlerFunc(patchHandler))
+func TestDeleteHandler_Wrong(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(DeleteHandler))
 	defer ts.Close()
 
 	body := bytes.NewBufferString("Hello world!")
-	req, err := http.NewRequest(http.MethodGet, ts.URL, body)
+	req, err := http.NewRequest("GET", ts.URL, body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -53,13 +52,14 @@ func TestPatchHandler_Wrong(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var msgPatch patchResponse
-	err = json.Unmarshal(out, &msgPatch)
+
+	var deleteErr errDelete
+	err = json.Unmarshal(out, &deleteErr)
 	if err != nil {
 		t.Fatal(err)
 	}
-	errMsg := "Supports only PATCH method. Please use PATCH method."
-	if msgPatch.ErrMsg != errMsg {
-		t.Fatalf("Error should be: %s\n but i recieved: %s\n", errMsg, msgPatch.ErrMsg)
+	MsgErr := "Supports only DELETE method. Please use DELETE method."
+	if deleteErr.ErrMsg != MsgErr {
+		t.Fatalf("Error should be: %s\n but i recieved: %s\n", MsgErr, deleteErr.ErrMsg)
 	}
 }

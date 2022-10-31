@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"bytes"
@@ -9,12 +9,12 @@ import (
 	"testing"
 )
 
-func TestDeleteHandler_Success(t *testing.T) {
-	ts := httptest.NewServer(http.HandlerFunc(deleteHandler))
+func TestPutHandler(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(PutHandler))
 	defer ts.Close()
 
 	body := bytes.NewBufferString("Hello world!")
-	req, err := http.NewRequest("DELETE", ts.URL, body)
+	req, err := http.NewRequest(http.MethodPut, ts.URL, body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,21 +23,23 @@ func TestDeleteHandler_Success(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	outGet, err := io.ReadAll(resp.Body)
+
+	out, err := io.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatal(err)
 	}
-	stringOut := string(outGet)
+	stringOut := string(out)
 	if stringOut != "Hello world!" {
 		t.Fatalf(`Output should be "Hello world!",  but you have %s`, stringOut)
 	}
 }
-func TestDeleteHandler_Wrong(t *testing.T) {
-	ts := httptest.NewServer(http.HandlerFunc(deleteHandler))
+
+func TestPutHandler_Wrong(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(PutHandler))
 	defer ts.Close()
 
 	body := bytes.NewBufferString("Hello world!")
-	req, err := http.NewRequest("GET", ts.URL, body)
+	req, err := http.NewRequest(http.MethodGet, ts.URL, body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -53,13 +55,13 @@ func TestDeleteHandler_Wrong(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	var deleteErr errDelete
-	err = json.Unmarshal(out, &deleteErr)
+	var putResp errPut
+	err = json.Unmarshal(out, &putResp)
 	if err != nil {
-		t.Fatal(err)
+		t.Fatal()
 	}
-	MsgErr := "Supports only DELETE method. Please use DELETE method."
-	if deleteErr.ErrMsg != MsgErr {
-		t.Fatalf("Error should be: %s\n but i recieved: %s\n", MsgErr, deleteErr.ErrMsg)
+	errMessage := "Supports only PUT method. Please use PUT method."
+	if putResp.ErrMsg != errMessage {
+		t.Fatalf("Error should be: %s\n but i recieved: %s\n", errMessage, putResp.ErrMsg)
 	}
 }
