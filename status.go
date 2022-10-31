@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -32,4 +33,12 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(status)
+}
+func errMsg(msg string) string {
+	Msg := msgErr{msg}
+	outErr, err := json.Marshal(&Msg)
+	if err != nil {
+		return `{"Error code": "-1"}`
+	}
+	return string(outErr)
 }

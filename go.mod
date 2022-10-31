@@ -1,4 +1,4 @@
-module httpbin
+module github.com/dilsaduzar/httpbin
 
 go 1.19
 
