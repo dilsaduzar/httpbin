@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"httpbin/handler"
 	"net/http"
 
+	"github.com/dilsaduzar/httpbin/handler"
 	"github.com/gorilla/mux"
 )
 
