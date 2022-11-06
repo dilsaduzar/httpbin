@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"io"
@@ -7,7 +7,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func echoHandler(w http.ResponseWriter, r *http.Request) {
+func EchoHandler(w http.ResponseWriter, r *http.Request) {
 	out, err := io.ReadAll(r.Body)
 	if err != nil {
 		io.WriteString(w, errMsg("Error Code: 01"))

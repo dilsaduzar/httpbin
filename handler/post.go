@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"io"
@@ -9,7 +9,7 @@ type errPost struct {
 	ErrMsg string
 }
 
-func postHandler(w http.ResponseWriter, r *http.Request) {
+func PostHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
 		out, err := io.ReadAll(r.Body)

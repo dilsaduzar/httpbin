@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 )
 
 func TestRoot(t *testing.T) {
-	ts := httptest.NewServer(http.HandlerFunc(rootHandler))
+	ts := httptest.NewServer(http.HandlerFunc(RootHandler))
 	defer ts.Close()
 
 	req, err := http.NewRequest("GET", ts.URL, nil)

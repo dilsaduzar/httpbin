@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"io"
@@ -9,7 +9,7 @@ type errPut struct {
 	ErrMsg string
 }
 
-func putHandler(w http.ResponseWriter, r *http.Request) {
+func PutHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "PUT":
 		out, err := io.ReadAll(r.Body)

@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ type userResponse struct {
 	UserAgent string `json:"user-agent"`
 }
 
-func userAgentHandler(w http.ResponseWriter, r *http.Request) {
+func UserAgentHandler(w http.ResponseWriter, r *http.Request) {
 	uAgent := userResponse{
 		UserAgent: r.UserAgent(),
 	}

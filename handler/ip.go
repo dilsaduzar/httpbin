@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"encoding/json"
@@ -11,7 +11,7 @@ type ip struct {
 	Origin string `json:"origin,omitempty"`
 }
 
-func ipHandler(w http.ResponseWriter, r *http.Request) {
+func IpHandler(w http.ResponseWriter, r *http.Request) {
 	ipInf := ip{
 		Origin: r.Host,
 	}

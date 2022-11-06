@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"bytes"
@@ -9,12 +9,12 @@ import (
 	"testing"
 )
 
-func TestPutHandler(t *testing.T) {
-	ts := httptest.NewServer(http.HandlerFunc(putHandler))
+func TestPatchHandler_Success(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(PatchHandler))
 	defer ts.Close()
 
 	body := bytes.NewBufferString("Hello world!")
-	req, err := http.NewRequest(http.MethodPut, ts.URL, body)
+	req, err := http.NewRequest(http.MethodPatch, ts.URL, body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,19 +23,18 @@ func TestPutHandler(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	out, err := io.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatal(err)
 	}
 	stringOut := string(out)
+
 	if stringOut != "Hello world!" {
 		t.Fatalf(`Output should be "Hello world!",  but you have %s`, stringOut)
 	}
 }
-
-func TestPutHandler_Wrong(t *testing.T) {
-	ts := httptest.NewServer(http.HandlerFunc(putHandler))
+func TestPatchHandler_Wrong(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(PatchHandler))
 	defer ts.Close()
 
 	body := bytes.NewBufferString("Hello world!")
@@ -54,14 +53,13 @@ func TestPutHandler_Wrong(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	var putResp errPut
-	err = json.Unmarshal(out, &putResp)
+	var msgPatch patchResponse
+	err = json.Unmarshal(out, &msgPatch)
 	if err != nil {
-		t.Fatal()
+		t.Fatal(err)
 	}
-	errMessage := "Supports only PUT method. Please use PUT method."
-	if putResp.ErrMsg != errMessage {
-		t.Fatalf("Error should be: %s\n but i recieved: %s\n", errMessage, putResp.ErrMsg)
+	errMsg := "Supports only PATCH method. Please use PATCH method."
+	if msgPatch.ErrMsg != errMsg {
+		t.Fatalf("Error should be: %s\n but i recieved: %s\n", errMsg, msgPatch.ErrMsg)
 	}
 }
