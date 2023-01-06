@@ -1,26 +1,39 @@
 package main
 
 import (
-	"encoding/json"
+	"database/sql"
 	"flag"
 	"fmt"
 	"net/http"
 
 	"github.com/dilsaduzar/httpbin/handler"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
 
-type msgErr struct {
-	ErrMsg string
-}
-
 func main() {
 	port := flag.String("port", "", "port number of the running server")
+	sqluser := flag.String("sqluser", "", "user information of the database")
 	flag.Parse()
+
 	if *port == "" {
 		fmt.Println("Please give a port number. Example --port 7077")
 		return
 	}
+
+	flag.Parse()
+	if *sqluser == "" {
+		fmt.Println(`Please give a user information. Example --sqluser "example:123(127.0.0.1:3306)/example"`)
+		return
+	}
+
+	db, err := sql.Open("mysql", *sqluser)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	handler.DB = db
 
 	r := mux.NewRouter()
 
@@ -28,6 +41,8 @@ func main() {
 
 	r.HandleFunc("/echo/{name}", handler.EchoHandler)
 	r.HandleFunc("/status/{codes}", handler.StatusHandler)
+
+	r.HandleFunc("/cities/{city}", handler.CitiesHandler)
 
 	// client requests
 	r.HandleFunc("/ip", handler.IpHandler)
@@ -42,16 +57,8 @@ func main() {
 	r.HandleFunc("/patch", handler.PatchHandler)
 
 	fmt.Printf("Starting server: %s\n", *port)
-	err := http.ListenAndServe(fmt.Sprintf(":%s", *port), r)
+	err = http.ListenAndServe(fmt.Sprintf(":%s", *port), r)
 	if err != nil {
 		fmt.Printf("Couldn`t start server. Error %s\n", err)
 	}
-}
-func errMsg(msg string) string {
-	Msg := msgErr{msg}
-	outErr, err := json.Marshal(&Msg)
-	if err != nil {
-		return `{"Error code": "-1"}`
-	}
-	return string(outErr)
 }

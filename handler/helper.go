@@ -1,6 +1,8 @@
 package handler
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 type msgErr struct {
 	ErrMsg string
