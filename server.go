@@ -13,7 +13,7 @@ import (
 
 func main() {
 	port := flag.String("port", "", "port number of the running server")
-	sqluser := flag.String("sqluser", "", "user information of the database")
+	dburl := flag.String("sqluser", "", "user information of the database")
 	flag.Parse()
 
 	if *port == "" {
@@ -21,15 +21,15 @@ func main() {
 		return
 	}
 
-	flag.Parse()
-	if *sqluser == "" {
+	if *dburl == "" {
 		fmt.Println(`Please give a user information. Example --sqluser "example:123(127.0.0.1:3306)/example"`)
 		return
 	}
 
-	db, err := sql.Open("mysql", *sqluser)
+	db, err := sql.Open("mysql", *dburl)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	defer db.Close()
 

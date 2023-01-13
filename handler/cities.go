@@ -30,12 +30,12 @@ func CitiesHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		result, err := fetchCity(DB, name)
 		if err != nil {
-			w.WriteHeader(400)
+			w.WriteHeader(500)
 			io.WriteString(w, err.Error())
 			return
 		}
 		if name != result.Name {
-			io.WriteString(w, errMsg("The city is not found."))
+			io.WriteString(w, errMsg("the city is not found."))
 			return
 		}
 		city = result
@@ -49,33 +49,18 @@ func CitiesHandler(w http.ResponseWriter, r *http.Request) {
 		var cty City
 		err = json.Unmarshal(out, &cty)
 		if err != nil {
-			io.WriteString(w, errMsg("You need to send JSON string"))
+			io.WriteString(w, errMsg("You need to send a JSON string"))
 			return
 		}
-
-		id := cty.ID
-		name := cty.Name
-		region := cty.Region
-		country := cty.Country
-		number_plate := cty.NumberPlate
-		population := cty.Population
 
 		err = insertCity(DB, cty)
 		if err != nil {
-			w.WriteHeader(400)
+			w.WriteHeader(500)
 			io.WriteString(w, err.Error())
 			return
 		}
-		result := City{
-			ID:          id,
-			Name:        name,
-			Region:      region,
-			Country:     country,
-			NumberPlate: number_plate,
-			Population:  population,
-		}
 
-		city = result
+		city = cty
 	} else {
 		w.WriteHeader(501)
 		io.WriteString(w, errMsg("Supports only GET and POST methods. Please use GET or POST method."))
@@ -118,7 +103,7 @@ func insertCity(db *sql.DB, city City) error {
 	_, err := db.Exec("insert into cities (name, region, country, number_plate, population) values (?, ?, ?, ?, ?)",
 		city.Name, city.Region, city.Country, city.NumberPlate, city.Population)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	return nil
