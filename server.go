@@ -32,7 +32,11 @@ func main() {
 		return
 	}
 	defer db.Close()
-
+	err = db.Ping()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	handler.DB = db
 
 	r := mux.NewRouter()
