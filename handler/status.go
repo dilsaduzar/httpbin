@@ -32,4 +32,5 @@ func StatusHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(status)
+	fmt.Fprintln(w, result)
 }
