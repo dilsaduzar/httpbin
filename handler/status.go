@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -11,6 +12,9 @@ import (
 
 type statusResponse struct {
 	ErrMsg string
+}
+type statusCode struct {
+	StatusCode string
 }
 
 func StatusHandler(w http.ResponseWriter, r *http.Request) {
@@ -32,5 +36,14 @@ func StatusHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(status)
-	fmt.Fprintln(w, result)
+
+	resultJSON := statusCode{
+		StatusCode: result,
+	}
+	out, err := json.Marshal(resultJSON)
+	if err != nil {
+		io.WriteString(w, errMsg("Error Code: S01"))
+		return
+	}
+	fmt.Fprintln(w, string(out))
 }
