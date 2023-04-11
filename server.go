@@ -16,13 +16,9 @@ func main() {
 	dburl := flag.String("sqluser", "", "user information of the database")
 	flag.Parse()
 
-	if *port == "" {
-		fmt.Println("Please give a port number. Example --port 7077")
-		return
-	}
+	if *port == "" || *dburl == "" {
+		fmt.Println(`Please give a port number and user information. Example --port 7077 --sqluser "example:123(127.0.0.1:3306)/example"`)
 
-	if *dburl == "" {
-		fmt.Println(`Please give a user information. Example --sqluser "example:123(127.0.0.1:3306)/example"`)
 		return
 	}
 
